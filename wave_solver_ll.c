@@ -14,6 +14,11 @@
 
 #define SPEED 4.0
 
+int ierr;
+int num_procs;
+MPI_Status status;
+int N_local;
+
 struct point {
   double x;
   double val_old;
@@ -55,6 +60,45 @@ void init_array_end_points(struct point p_point[], double start, double stop, un
   return;
 }
 
+void apply_BCs(struct point point_array[],
+               struct point* ghost_left,
+               struct point* ghost_right,
+               int my_id)
+{
+  if (my_id == 0) {
+    //send ghost cells
+    ierr = MPI_Send(&(point_array[N_local-1].val), 1, MPI_DOUBLE, my_id+1, 1, MPI_COMM_WORLD);
+
+    //receive ghost cells
+    ierr = MPI_Recv(&(ghost_right->val), 1, MPI_DOUBLE, my_id+1, 1, MPI_COMM_WORLD, &status);
+    (*ghost_left).x = -DX;
+    (*ghost_left).val = 0;
+    (*ghost_left).val_old = 0;
+    (*ghost_left).val_new = 0;
+  }
+  else if (my_id == num_procs-1) {
+    //send ghost cells
+    ierr = MPI_Send(&(point_array[0].val),         1, MPI_DOUBLE, my_id-1, 1, MPI_COMM_WORLD);
+
+    //receive ghost cells
+    (*ghost_right).x = LENGTH+DX;
+    (*ghost_right).val = 0;
+    (*ghost_right).val_old = 0;
+    (*ghost_right).val_new = 0;
+    ierr = MPI_Recv(&(ghost_left->val),  1, MPI_DOUBLE, my_id-1, 1, MPI_COMM_WORLD, &status);
+  }
+  else {
+    //send ghost cells
+    ierr = MPI_Send(&(point_array[0].val),         1, MPI_DOUBLE, my_id-1, 1, MPI_COMM_WORLD);
+    ierr = MPI_Send(&(point_array[N_local-1].val), 1, MPI_DOUBLE, my_id+1, 1, MPI_COMM_WORLD);
+
+    //receive ghost cells
+    ierr = MPI_Recv(&(ghost_right->val), 1, MPI_DOUBLE, my_id+1, 1, MPI_COMM_WORLD, &status);
+    ierr = MPI_Recv(&(ghost_left->val),  1, MPI_DOUBLE, my_id-1, 1, MPI_COMM_WORLD, &status);
+  }
+  //MPI_Barrier(MPI_COMM_WORLD);
+}
+
 int main(int argc, char** argv)
 {
   double time = 0.0;
@@ -70,12 +114,12 @@ int main(int argc, char** argv)
   double start = 0;
   double end = LENGTH;
   
-  int ierr, num_procs, my_id;
+  int ierr;
   int root_process = 0;
-
-  MPI_Status status;
   ierr = MPI_Init(&argc, &argv);
 
+
+  int my_id;
   /* find out MY process ID, and how many processes were started. */
 
   ierr = MPI_Comm_rank(MPI_COMM_WORLD, &my_id);
@@ -101,7 +145,8 @@ int main(int argc, char** argv)
   ierr = MPI_Recv(&start, 1, MPI_DOUBLE, root_process, 1, MPI_COMM_WORLD, &status);
   ierr = MPI_Recv(&end,   1, MPI_DOUBLE, root_process, 1, MPI_COMM_WORLD, &status);
 
-  unsigned int N_local = N/num_procs;
+  //unsigned const int
+  N_local = N/num_procs;
   struct point ghost_left;
   struct point point_array[N_local];
   struct point ghost_right;
@@ -113,38 +158,7 @@ int main(int argc, char** argv)
 
   while (time <= MAX_TIME) {
 
-    if (my_id == 0) {
-      //send ghost cells
-      ierr = MPI_Send(&(point_array[N_local-1].val), 1, MPI_DOUBLE, my_id+1, 1, MPI_COMM_WORLD);
-
-      //receive ghost cells
-      ierr = MPI_Recv(&(ghost_right.val), 1, MPI_DOUBLE, my_id+1, 1, MPI_COMM_WORLD, &status);
-      ghost_left.x = -DX;
-      ghost_left.val = 0;
-      ghost_left.val_old = 0;
-      ghost_left.val_new = 0;
-    }
-    else if (my_id == num_procs-1) {
-      //send ghost cells
-      ierr = MPI_Send(&(point_array[0].val),         1, MPI_DOUBLE, my_id-1, 1, MPI_COMM_WORLD);
-
-      //receive ghost cells
-      ghost_right.x = LENGTH+DX;
-      ghost_right.val = 0;
-      ghost_right.val_old = 0;
-      ghost_right.val_new = 0;
-      ierr = MPI_Recv(&(ghost_left.val),  1, MPI_DOUBLE, my_id-1, 1, MPI_COMM_WORLD, &status);
-    }
-    else {
-      //send ghost cells
-      ierr = MPI_Send(&(point_array[0].val),         1, MPI_DOUBLE, my_id-1, 1, MPI_COMM_WORLD);
-      ierr = MPI_Send(&(point_array[N_local-1].val), 1, MPI_DOUBLE, my_id+1, 1, MPI_COMM_WORLD);
-
-      //receive ghost cells
-      ierr = MPI_Recv(&(ghost_right.val), 1, MPI_DOUBLE, my_id+1, 1, MPI_COMM_WORLD, &status);
-      ierr = MPI_Recv(&(ghost_left.val),  1, MPI_DOUBLE, my_id-1, 1, MPI_COMM_WORLD, &status);
-    }
-    //MPI_Barrier(MPI_COMM_WORLD);
+    apply_BCs(point_array, &ghost_left, &ghost_right, my_id);
     
     point_array[0].val_new = CFL2*(point_array[1].val + ghost_left.val) + 2.0*(1.0-CFL2)*point_array[0].val - point_array[0].val_old;
         
