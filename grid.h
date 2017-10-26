@@ -11,13 +11,14 @@
 #include "mpi_util.h"
 #endif
 
+/*number of points in the local grid (single proc)*/
 int N_local;
 
 struct point {
   double x;
-  double val_old;
-  double val;
-  double val_new;
+  double val_old; /*last time step*/
+  double val;     /*this time step*/
+  double val_new; /*next time step*/
 };
 
 void init_array(struct point p_point[], double start, double stop);
@@ -36,6 +37,7 @@ void update_grid(struct point point_array[],
 /*update storage  val_old = val  val = val_new  */
 void update_storage(struct point point_array[]);
 
+/* print output to STDOUT */
 void output(struct point point_array[]);
 
 #endif /*GRID*/

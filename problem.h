@@ -1,5 +1,4 @@
 /* The problem definition */
-
 #ifndef PROBLEM
 #define PROBLEM
 
@@ -15,8 +14,10 @@
 #define MAX_TIME 30.0
 #define DT 0.0001
 
-#define SPEED 4.0
+/* wavespeed aka c */
+#define SPEED 4.0 
 
 #define INITIAL_CONDITION(x) (double)(0.5 - 0.5*cos((2.0*PI/LENGTH)*(x)))
 
+/* TODO: custom BCs*/
 #endif /*PROBLEM*/

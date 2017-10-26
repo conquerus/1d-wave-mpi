@@ -1,5 +1,6 @@
 #include "grid.h"
 
+/*make point array and assign initial condition*/
 void init_array(struct point p_point[], double start, double stop)
 {
   double step = (stop-start)/N_local;
@@ -28,6 +29,7 @@ void apply_BCs(struct point point_array[],
     ierr = MPI_Send(&(point_array[N_local-1].val), 1, MPI_DOUBLE, my_id+1, 1, MPI_COMM_WORLD);
     /* receive ghost cells */
     ierr = MPI_Recv(&(ghost_right->val), 1, MPI_DOUBLE, my_id+1, 1, MPI_COMM_WORLD, &status);
+    /* BC */
     (*ghost_left).x = -DX;
     (*ghost_left).val = 0;
     (*ghost_left).val_old = 0;
@@ -37,11 +39,12 @@ void apply_BCs(struct point point_array[],
     /* send ghost cells */
     ierr = MPI_Send(&(point_array[0].val),         1, MPI_DOUBLE, my_id-1, 1, MPI_COMM_WORLD);
     /* receive ghost cells */
+    ierr = MPI_Recv(&(ghost_left->val),  1, MPI_DOUBLE, my_id-1, 1, MPI_COMM_WORLD, &status);
+    /* BC */
     (*ghost_right).x = LENGTH+DX;
     (*ghost_right).val = 0;
     (*ghost_right).val_old = 0;
     (*ghost_right).val_new = 0;
-    ierr = MPI_Recv(&(ghost_left->val),  1, MPI_DOUBLE, my_id-1, 1, MPI_COMM_WORLD, &status);
   }
   else {
     /* send ghost cells */
@@ -53,7 +56,7 @@ void apply_BCs(struct point point_array[],
   }
 }
 
-/* Perform a single time step using first order spacial discretiztion. */
+/* Perform a single time step using first-order spacial discretization. */
 void update_grid(struct point point_array[], struct point* ghost_left, struct point* ghost_right) {
   double CFL2 = ((SPEED*DT)/DX)*((SPEED*DT)/DX);
   
@@ -66,7 +69,7 @@ void update_grid(struct point point_array[], struct point* ghost_left, struct po
   point_array[N_local-1].val_new = CFL2 * (ghost_right->val + point_array[N_local-2].val) + 2.0*(1.0-CFL2)*point_array[N_local-1].val - point_array[N_local-1].val_old;
 }
 
-/*update storage  val_old = val  val = val_new  */
+/*update storage  val_old = val -> val = val_new  */
 void update_storage(struct point point_array[]) {
   for (unsigned int i = 0; i < N_local; i++) {
     point_array[i].val_old = point_array[i].val;
