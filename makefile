@@ -1,13 +1,14 @@
 .POSIX:
-CC=mpicc
-CFLAGS=-std=c99 -Wall -pedantic -pthread -O3 
-LDLIBS = -lm
+CC = mpicc
+CFLAGS = -std=c99 -Wall -pedantic -pthread -O3 
+LDFLAGS = -lm
+LDLIBS = 
 
 OBJECTS = main.o grid.o mpi_util.o
 
 all: main
 
-main: main.o grid.o mpi_util.o
+main: $(OBJECTS)
 	$(CC) $(CFLAGS) -o ./bin/wave_1D $(OBJECTS) $(LDFLAGS) $(LDLIBS)
 
 main.o: main.c problem.h

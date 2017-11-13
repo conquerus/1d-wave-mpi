@@ -22,6 +22,6 @@ int start_mpi(int * argc, char ** argv);
 void allocate_to_procs(double start, double end);
 
 /* Get the start and end values from root proc. */
-void get_start_end_vals();
+void get_start_end_vals(double * start, double * end);
 
 #endif /*MPI_UTIL*/

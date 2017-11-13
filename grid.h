@@ -21,7 +21,7 @@ struct point {
   double val_new; /*next time step*/
 };
 
-void init_array(struct point p_point[], double start, double stop);
+void init_array(struct point point_array[], double start, double stop);
 
 /* Apply the BCs and communicate between procs. */
 void apply_BCs(struct point point_array[],

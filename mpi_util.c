@@ -3,7 +3,7 @@
 int start_mpi(int * argc, char ** argv) {
   ierr = MPI_Init(argc, &argv);
 
-  /* find out MY process ID, and how many processes were started. */
+  /* find out my process ID, and how many processes were started. */
   ierr = MPI_Comm_rank(MPI_COMM_WORLD, &my_id);
   ierr = MPI_Comm_size(MPI_COMM_WORLD, &num_procs);
 

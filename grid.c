@@ -1,15 +1,15 @@
 #include "grid.h"
 
-/*make point array and assign initial condition*/
-void init_array(struct point p_point[], double start, double stop)
+/* Make point array and assign initial condition */
+void init_array(struct point point_array[], double start, double stop)
 {
   double step = (stop-start)/N_local;
   double x = start;
   
   for (unsigned int i = 0; i <= N_local; i++) {
-    p_point[i].x = x;
-    p_point[i].val = INITIAL_CONDITION(x);
-    p_point[i].val_old = p_point[i].val;
+    point_array[i].x = x;
+    point_array[i].val = INITIAL_CONDITION(x);
+    point_array[i].val_old = point_array[i].val;
     x += step;
   }
   return;
@@ -79,7 +79,7 @@ void update_storage(struct point point_array[]) {
 
 void output(struct point point_array[]) {
   for (unsigned int i = 0; i < N_local; i++) {
-    printf("%f, %f\n", point_array[i].x, point_array[i].val);
+    printf("%f; %f\n", point_array[i].x, point_array[i].val);
     MPI_Barrier(MPI_COMM_WORLD);
   }
 }
