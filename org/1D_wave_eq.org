@@ -1,0 +1,7 @@
+* Description
+
+  Solve the 1D wave equation and use MPI with domain decomposition
+
+
+* Tasks
+** TODO replace types with /standard/ types
