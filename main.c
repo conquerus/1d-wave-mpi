@@ -24,7 +24,7 @@ int main(int argc, char* argv[])
   /* Space */
   double start = 0;
   double end = LENGTH;
-  extern int N_local;  
+  extern unsigned int N_local;  
 
   start_mpi(&argc, argv);
 

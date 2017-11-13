@@ -12,7 +12,7 @@
 #endif
 
 /*number of points in the local grid (single proc)*/
-int N_local;
+unsigned int N_local;
 
 struct point {
   double x;

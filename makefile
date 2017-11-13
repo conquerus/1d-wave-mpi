@@ -1,6 +1,6 @@
 .POSIX:
 CC = mpicc
-CFLAGS = -std=c99 -Wall -pedantic -pthread -O3 
+CFLAGS = -std=c99 -Wall -Wextra -pedantic -pthread -O3 -march=native
 LDFLAGS = -lm
 LDLIBS = 
 
