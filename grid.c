@@ -1,5 +1,7 @@
 #include "grid.h"
 
+unsigned int N_local = 0;
+
 /* Make point array and assign initial condition */
 void init_array(struct point point_array[], double start, double stop)
 {

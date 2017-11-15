@@ -5,3 +5,4 @@
 
 * Tasks
 ** TODO replace types with /standard/ types
+** TODO organize file structure (/obj, /inc, /src ...)

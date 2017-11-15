@@ -9,10 +9,10 @@
 
 #include <mpi.h>
 
-int ierr;
-int num_procs;
-int root_process;
-int my_id;
+extern int ierr;
+extern int num_procs;
+extern int root_process;
+extern int my_id;
 
 MPI_Status status;
 

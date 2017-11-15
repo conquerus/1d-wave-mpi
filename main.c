@@ -12,11 +12,6 @@
 
 int main(int argc, char* argv[])
 {
-  /* MPI */
-  extern int my_id;
-  extern int ierr;
-  extern int num_procs;
-  extern int root_process;
 
   /* Time */
   double time = INIT_TIME;
@@ -24,12 +19,11 @@ int main(int argc, char* argv[])
   /* Space */
   double start = 0;
   double end = LENGTH;
-  extern unsigned int N_local;  
 
   start_mpi(&argc, argv);
 
   N_local = N/num_procs;
-  
+
   if (my_id == root_process) {
     allocate_to_procs(start, end);
   }

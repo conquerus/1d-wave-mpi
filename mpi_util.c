@@ -1,5 +1,11 @@
 #include "mpi_util.h"
 
+/* MPI */
+int ierr = 0;
+int num_procs = 1;
+int root_process = 0;
+int my_id = 0;
+
 int start_mpi(int * argc, char ** argv) {
   ierr = MPI_Init(argc, &argv);
 
