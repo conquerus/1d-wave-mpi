@@ -23,9 +23,6 @@ void apply_BCs(struct point point_array[],
                struct point* ghost_right,
                int my_id)
 {
-  extern int num_procs;
-  extern int ierr;
-  
   if (my_id == 0) {
     /* send ghost cells */
     ierr = MPI_Send(&(point_array[N_local-1].val), 1, MPI_DOUBLE, my_id+1, 1, MPI_COMM_WORLD);
