@@ -14,7 +14,7 @@ should be able install with =sudo apt install libopenmpi-dev=.
 3. run =mpirun -np 6 ./bin/wave_1D= (the number of processors can be
    changed depending on your system).
 4. the output can be piped to a file (e.g. =out=) and plotted using the
-   included Gnuplot script [[file:./plot.gplt][plot.gplt]] (i.e. =gnuplot plot.gplt=)
+   included Gnuplot script [[file:./bin/plot.gplt][plot.gplt]] (i.e. =gnuplot plot.gplt=)
 ** Verification
 A Matlab script which can be used to verify the results can be found
 [[http://cs.slu.edu/~chambers/fall09/cs145/wave-equation.pdf][here]]. A modified version of the script is included in the
