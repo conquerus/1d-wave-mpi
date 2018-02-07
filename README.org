@@ -1,14 +1,9 @@
 * 1D Wave Equation Solver with MPI
 ** Overview
-This code solves the [[https://en.wikipedia.org/wiki/Wave_equation][1D wave equation]], 
-
-\begin{equation}
-\frac{\partial^2{h}}{\partial{t}^2} = c^2 \frac{\partial^2{h}}{\partial{x}^2}
-\end{equation}
-
-using [[https://en.wikipedia.org/wiki/Finite_difference][central finite differences]]. The code is parallelized using MPI
-and domain decomposition. It was mostly written as a learning exercise
-to develop skills with MPI and C.
+This code solves the [[https://en.wikipedia.org/wiki/Wave_equation][1D wave equation]] using [[https://en.wikipedia.org/wiki/Finite_difference][central finite
+differences]]. The code is parallelized using MPI and domain
+decomposition. It was mostly written as a learning exercise to develop
+my skills with MPI and C.
 ** Requirements
 The only non-standard library required is =mpi.h=. On Ubuntu you
 should be able install with =sudo apt install libopenmpi-dev=.
@@ -34,9 +29,8 @@ utility =time=, to execute (using 60,000 grid points) relative to the
 number of processors used can be seen in the figure below. Note that
 the computational speedup from 2 to 4 processors is 1.9, which is
 very close to the theoretical maximum of 2. From 4 to 6 the speedup is
-1.4.  [[file:./images/speedup.png]]
-** Tasks
-*** TODO replace types with /standard/ types
-*** DONE organize file structure (/inc, /bin ...)
-   CLOSED: [2018-02-07 Wed 00:00]
-   - CLOSING NOTE [2018-02-07 Wed 00:00]
+1.4.  
+#+BEGIN_CENTER
+[[file:./images/speedup.png]]
+#+END_CENTER
+
