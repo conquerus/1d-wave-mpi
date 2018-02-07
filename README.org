@@ -22,14 +22,19 @@ repository. A side by side comparison of the solutions at t=5s using
 the Matlab script and this parallelized code are given below (Matlab
 on right): 
 
-file:./images/C_MPI_solv.png [[file:./images/matlab_solv.png]]
+#+BEGIN_CENTER
+[[file:./images/C_MPI_solv.png]]
+[[file:./images/matlab_solv.png]]
+#+END_CENTER
+
 *** Speedup
 The time it takes for the code, as measured using the GNU/Linux
 utility =time=, to execute (using 60,000 grid points) relative to the
 number of processors used can be seen in the figure below. Note that
 the computational speedup from 2 to 4 processors is 1.9, which is
 very close to the theoretical maximum of 2. From 4 to 6 the speedup is
-1.4.  
+1.4.
+
 #+BEGIN_CENTER
 [[file:./images/speedup.png]]
 #+END_CENTER
