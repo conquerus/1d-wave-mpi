@@ -82,4 +82,3 @@ void output(struct point point_array[]) {
     MPI_Barrier(MPI_COMM_WORLD);
   }
 }
-

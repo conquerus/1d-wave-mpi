@@ -1,0 +1,42 @@
+* 1D Wave Equation Solver with MPI
+** Overview
+This code solves the [[https://en.wikipedia.org/wiki/Wave_equation][1D wave equation]], 
+
+\begin{equation}
+\frac{\partial^2{h}}{\partial{t}^2} = c^2 \frac{\partial^2{h}}{\partial{x}^2}
+\end{equation}
+
+using [[https://en.wikipedia.org/wiki/Finite_difference][central finite differences]]. The code is parallelized using MPI
+and domain decomposition. It was mostly written as a learning exercise
+to develop skills with MPI and C.
+** Requirements
+The only non-standard library required is =mpi.h=. On Ubuntu you
+should be able install with =sudo apt install libopenmpi-dev=.
+** Installation and running
+1. The problem parameters, such as time step, spatial discretization,
+   and initial condition, can be redefined in [[file:./inc/problem.h][problem.h]].
+2. Install using make by running =make clean all=
+3. run =mpirun -np 6 ./bin/wave_1D= (the number of processors can be
+   changed depending on your system).
+4. the output can be piped to a file (e.g. =out=) and plotted using the
+   included Gnuplot script [[file:./plot.gplt][plot.gplt]] (i.e. =gnuplot plot.gplt=)
+** Verification
+A Matlab script which can be used to verify the results can be found
+[[http://cs.slu.edu/~chambers/fall09/cs145/wave-equation.pdf][here]]. A modified version of the script is included in the
+repository. A side by side comparison of the solutions at t=5s using
+the Matlab script and this parallelized code are given below (Matlab
+on right): 
+
+file:./images/C_MPI_solv.png [[file:./images/matlab_solv.png]]
+*** Speedup
+The time it takes for the code, as measured using the GNU/Linux
+utility =time=, to execute (using 60,000 grid points) relative to the
+number of processors used can be seen in the figure below. Note that
+the computational speedup from 2 to 4 processors is 1.9, which is
+very close to the theoretical maximum of 2. From 4 to 6 the speedup is
+1.4.  [[file:./images/speedup.png]]
+** Tasks
+*** TODO replace types with /standard/ types
+*** DONE organize file structure (/inc, /bin ...)
+   CLOSED: [2018-02-07 Wed 00:00]
+   - CLOSING NOTE [2018-02-07 Wed 00:00]

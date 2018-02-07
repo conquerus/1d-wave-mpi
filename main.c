@@ -28,7 +28,7 @@ int main(int argc, char* argv[])
     allocate_to_procs(start, end);
   }
 
-  /* each proc gests its physical space allocations */
+  /* each proc gets its physical space allocations */
   get_start_end_vals(&start, &end);
   
   /* Grid */
